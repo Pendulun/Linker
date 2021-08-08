@@ -1,3 +1,6 @@
-10 0 1010 0
+10 
 
+#INSTRUCOES
 1 0 #a 1 1 #const100 8 0 1 20 
+
+teste

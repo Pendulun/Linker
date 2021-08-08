@@ -3,11 +3,8 @@
 Montador::Montador(std::ifstream& entrada, std::ofstream& saida){
     this->entrada = &entrada;
     this->saida = &saida;
-    this->posAP=0;
     this->tamanhoPrograma=0;
-    this->entryPoint=0;
     this->definiuEntryPoint = false;
-    this->endCarregamento=0;
     this->LC=0;
 }
 
@@ -22,7 +19,7 @@ void Montador::montar(){
 
 void Montador::imprimirTabelaDeSimbolos(){
     for (std::map<std::string, unsigned int>::iterator it=this->tabelaDeSimbolos.begin(); it!=this->tabelaDeSimbolos.end(); ++it){
-        std::cout << it->first << " => " << it->second << '\n';
+        std::cout << it->first << ":" << it->second << '\n';
     }
     std::cout<<std::endl;
 }
@@ -57,7 +54,7 @@ void Montador::passo1(){
             else{
 
                 //INSTRUCOES TABELADAS
-                this->verificaEDefineEntryPoint();
+                //this->verificaEDefineEntryPoint();
 
                 if(opcode.compare("HALT")==0){
                     //Parada
@@ -141,16 +138,10 @@ void Montador::passo1(){
 
 void Montador::defineInformacoesArquivoSaida(){
     this->tamanhoPrograma = this->LC;
-    this->endCarregamento=0;
-    this->posAP = this->endCarregamento + this->tamanhoPrograma + this->TAMANHOPILHA;
-
 }
 
 void Montador::escreveInformacoesArquivoSaida(){
     *this->saida<<std::to_string(this->tamanhoPrograma).append(" ");
-    *this->saida<<std::to_string(this->endCarregamento).append(" ");
-    *this->saida<<std::to_string(this->posAP).append(" ");
-    *this->saida<<std::to_string(this->entryPoint);
     *this->saida<<std::endl;
     *this->saida<<std::endl;
 }
@@ -318,6 +309,9 @@ void Montador::passo2(){
     std::list<std::string> operandos;
     std::string valorOperacao="";
     //Para cada instrução lida
+
+    *this->saida<<"#INSTRUCOES\n";
+
     while(!this->entrada->eof()){
         std::getline(*this->entrada, instrucao);
 
@@ -471,13 +465,8 @@ void Montador::passo2(){
             //this->LC++;
         }
     }
-}
 
-void Montador::verificaEDefineEntryPoint(){
-    if(!this->definiuEntryPoint){
-        this->entryPoint = this->LC;
-        this->definiuEntryPoint=true;
-    }
+    *this->saida<<"\n\n";
 }
 
 bool Montador::isNumber(const std::string& str){

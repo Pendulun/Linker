@@ -17,9 +17,6 @@ class Montador{
         const unsigned int TAMANHOPILHA = 1000;
         unsigned int LC;
         unsigned int tamanhoPrograma;
-        unsigned int endCarregamento;
-        unsigned int posAP;
-        unsigned int entryPoint;
         bool definiuEntryPoint;
         
         std::map<std::string, unsigned int> tabelaDeSimbolos;
@@ -43,7 +40,6 @@ class Montador{
         void passo2();
         void resetaLeituraArquivoEntrada();
 
-        void verificaEDefineEntryPoint();
         void defineInformacoesArquivoSaida();
         void escreveInformacoesArquivoSaida();
         void escreveInstrucaoNoArquivoSaida(const std::string, const  std::list<std::string>);
