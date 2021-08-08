@@ -1,5 +1,7 @@
 #include "montador.hpp"
 #include <string>
+#include <fstream>
+#include <iostream>
 
 int main(int argc, char *argv[]) {
 
@@ -17,7 +19,8 @@ int main(int argc, char *argv[]) {
             if (entrada.is_open() && saida.is_open()){
 
                 Montador montador(entrada, saida);      
-                montador.montar();
+                //montador.montar();
+                std::cout<<"Montando modulo "<<i<<std::endl;
 
                 entrada.close();
                 saida.close();
