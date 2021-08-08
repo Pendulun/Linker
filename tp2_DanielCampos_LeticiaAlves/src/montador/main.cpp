@@ -1,30 +1,38 @@
 #include "montador.hpp"
+#include <string>
 
 int main(int argc, char *argv[]) {
 
-    // TODO: executar o montador...
-    std::ifstream entrada = std::ifstream();
-    std::ofstream saida = std::ofstream("saida.mv");
-
     if (argc > 1){
-        entrada.open(argv[1]);
 
-        if (entrada.is_open() && saida.is_open()){
+        for (int i=1; i<argc; i++){
 
-            Montador montador(entrada, saida);      
-            montador.montar();
+            std::string nomeSaida = (std::string)(argv[i])+".txt";
 
-            entrada.close();
-            saida.close();
+            std::ifstream entrada = std::ifstream();
+            std::ofstream saida = std::ofstream(nomeSaida);
+
+            entrada.open(argv[i]);
+
+            if (entrada.is_open() && saida.is_open()){
+
+                Montador montador(entrada, saida);      
+                montador.montar();
+
+                entrada.close();
+                saida.close();
+            }
+            else{
+                std::cout<<"Nao foi possivel abrir o arquivo.\n";
+            }
+
         }
-        else{
-        std::cout<<"Nao foi possivel abrir o arquivo.\n";
-        }
+
     }
     else{
-        std::cout<<"Arquivo nao informado.\n";
+        std::cout<<"Nenhum arquivo informado.\n";
         exit(1);
     }
-   
+
     return 0;
 }
