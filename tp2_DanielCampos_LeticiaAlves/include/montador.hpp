@@ -32,6 +32,7 @@ class Montador{
         std::string getOperando(std::string& instrucao);
         
         void inserirNaTabelaDeSimbolosSeLabelNaoVazio(std::string label, unsigned int valor);
+        bool isNumber(const std::string& str);
         std::string getValorOperandoMemoriaVerificandoTabelaSimbolos(std::string instrucao);
         int getRegistrador(std::string registrador);
 

@@ -487,6 +487,15 @@ void Montador::verificaEDefineEntryPoint(){
     }
 }
 
+bool Montador::isNumber(const std::string& str){
+    for (char const&c : str){
+        if (std::isdigit(c)==0){
+            return false;
+        }
+    }
+    return true;
+}
+
 std::string Montador::getValorOperandoMemoriaVerificandoTabelaSimbolos(std::string instrucao){
     std::string valorASerImpresso = "";
     std::string operandoMemoria = this->getOperando(instrucao);
@@ -499,8 +508,12 @@ std::string Montador::getValorOperandoMemoriaVerificandoTabelaSimbolos(std::stri
         //subtração de um unsigned int menor do que outro unsigned int causando underflow
         int enderecoRelativo = it->second - (this->LC);
         valorASerImpresso = std::to_string(enderecoRelativo);
-    }else{
-        valorASerImpresso = operandoMemoria;
+    }
+    else if(isNumber(operandoMemoria)){
+            valorASerImpresso = operandoMemoria;
+    }
+    else{
+        valorASerImpresso = "#"+operandoMemoria;
     }
 
     return valorASerImpresso;
