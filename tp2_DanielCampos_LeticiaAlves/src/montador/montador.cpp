@@ -17,11 +17,11 @@ void Montador::montar(){
     this->passo1();
 }
 
-void Montador::imprimirTabelaDeSimbolos(){
+void Montador::escreveTabelaDeSimbolos(){
     for (std::map<std::string, unsigned int>::iterator it=this->tabelaDeSimbolos.begin(); it!=this->tabelaDeSimbolos.end(); ++it){
-        std::cout << it->first << ":" << it->second << '\n';
+        *this->saida<<it->first<<":"<<it->second<<"\n";
     }
-    std::cout<<std::endl;
+    //std::cout<<std::endl;
 }
 
 
@@ -467,6 +467,8 @@ void Montador::passo2(){
     }
 
     *this->saida<<"\n\n";
+    *this->saida<<"#TABELA\n";
+    this->escreveTabelaDeSimbolos();
 }
 
 bool Montador::isNumber(const std::string& str){
