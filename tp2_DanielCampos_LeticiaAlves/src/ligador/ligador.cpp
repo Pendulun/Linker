@@ -1,3 +1,3 @@
-#include "ligador.h"
+#include "ligador.hpp"
 
 // TODO: implementação do editor de ligação
