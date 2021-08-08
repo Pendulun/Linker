@@ -5,17 +5,20 @@
 #include <string>
 #include <list>
 #include <unordered_map>
+#include <utility>
+#include <iostream>
 
 class Ligador{
     private:
         std::ofstream* saida;
 
         const unsigned int TAMANHOPILHA = 1000;
-        unsigned int tamanhoPrograma;
+        unsigned int tamanhoTotal;
         unsigned int endCarregamento;
         unsigned int posAP;
         unsigned int entryPoint;
         bool definiuEntryPoint;
+        std::unordered_map<std::string, unsigned int> tabelaSimbolos;
 
         
         void escreveCabecalhoArquivoSaida();
@@ -32,6 +35,7 @@ class Ligador{
 
         void lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo);
         void completarInstrucoesDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo);
+        void escreveTabelaDeSimbolos();
         void passo1();
         void passo2();
 
