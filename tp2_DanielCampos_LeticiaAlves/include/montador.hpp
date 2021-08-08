@@ -45,7 +45,6 @@ class Montador{
 
         void verificaEDefineEntryPoint();
         void defineInformacoesArquivoSaida();
-        void escreveCabecalhoArquivoSaida();
         void escreveInformacoesArquivoSaida();
         void escreveInstrucaoNoArquivoSaida(const std::string, const  std::list<std::string>);
 

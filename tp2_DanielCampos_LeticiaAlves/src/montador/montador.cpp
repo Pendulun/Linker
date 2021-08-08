@@ -17,14 +17,7 @@ Montador::~Montador(){
 }
 
 void Montador::montar(){
-    this->escreveCabecalhoArquivoSaida();
     this->passo1();
-}
-
-void Montador::escreveCabecalhoArquivoSaida(){
-    (*this->saida)<<"MV-EXE";
-    (*this->saida)<<std::endl;
-    (*this->saida)<<std::endl;
 }
 
 void Montador::imprimirTabelaDeSimbolos(){
