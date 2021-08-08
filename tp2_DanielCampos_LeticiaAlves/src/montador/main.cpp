@@ -9,7 +9,10 @@ int main(int argc, char *argv[]) {
 
         for (int i=1; i<argc; i++){
 
-            std::string nomeSaida = (std::string)(argv[i])+".txt";
+            std::string prefixoSaida = (std::string)(argv[i]);
+            prefixoSaida = prefixoSaida.substr(0, prefixoSaida.length()-4);
+
+            std::string nomeSaida = prefixoSaida+".txt";
 
             std::ifstream entrada = std::ifstream();
             std::ofstream saida = std::ofstream(nomeSaida);
