@@ -37,6 +37,7 @@ class Ligador{
         bool instrucaoTemReferenciaExterna(const std::string instrucao);
         const std::string getInstrucoesArquivo(std::ifstream& arquivoEntrada);
         int getEnderecoRelativo(const std::string instrucao, const unsigned int enderecoAtual);
+        
     public:
         Ligador(std::ofstream& saida);
         ~Ligador();

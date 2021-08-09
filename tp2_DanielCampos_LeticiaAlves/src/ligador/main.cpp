@@ -17,8 +17,6 @@ int main(int argc, char *argv[]) {
             for(int i = 1; i<argc; i++){
                 std::ifstream entrada = std::ifstream(argv[i]);
                 if (entrada.is_open()){
-                    std::cout<<"Abriu arquivo : "<<argv[i]<<" no passo 1\n";
-
                     linker.lerTamanhoETabelaDoArquivo(entrada, argv[i]);
 
                     entrada.close();
@@ -29,7 +27,6 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            linker.escreveTabelaDeSimbolos();
             linker.escreveInformacoesArquivoSaida();
 
             //Passo 2
@@ -37,8 +34,6 @@ int main(int argc, char *argv[]) {
                 for(int i = 1; i<argc; i++){
                     std::ifstream entrada = std::ifstream(argv[i]);
                     if (entrada.is_open()){
-                        std::cout<<"Abriu arquivo : "<<argv[i]<<" no passo 2\n";
-                        //Envia o arquivo para o passo 2 do Ligador 
                         linker.completarComInstrucoesDoArquivo(entrada, argv[i]);
                         entrada.close();
                     }else{

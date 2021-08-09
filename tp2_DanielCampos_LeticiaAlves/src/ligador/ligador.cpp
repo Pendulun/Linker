@@ -79,6 +79,18 @@ void Ligador::leEGravaTabelaDeSimbolos(std::ifstream& arquivoEntrada){
     }
 }
 
+void Ligador::navegaAteSecaoDoIdentificador(std::ifstream& arquivoEntrada, const std::string IDENTIFICADORSECAO){
+    std::string linha = "";
+    bool achouSecao = false;
+    while(!achouSecao && !arquivoEntrada.eof()){
+        std::getline(arquivoEntrada, linha);
+
+        if (linha.compare(IDENTIFICADORSECAO)==0){
+            achouSecao = true;
+        }
+    }
+}
+
 void Ligador::adicionaLabelEValorNaTabelaDeSimbolos(const std::string linha, const std::string SEPARADOR){
         size_t posSep = linha.find(SEPARADOR);
 
@@ -101,16 +113,34 @@ void Ligador::escreveTabelaDeSimbolos(){
     std::cout<<std::endl;
 }
 
-void Ligador::navegaAteSecaoDoIdentificador(std::ifstream& arquivoEntrada, const std::string IDENTIFICADORSECAO){
-    std::string linha = "";
-    bool achouSecao = false;
-    while(!achouSecao && !arquivoEntrada.eof()){
-        std::getline(arquivoEntrada, linha);
+void Ligador::completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, const std::string nomeArquivo){
+    this->escreveInstrucoesNaSaidaTratandoReferenciasExternas(arquivoEntrada, nomeArquivo);
+}
 
-        if (linha.compare(IDENTIFICADORSECAO)==0){
-            achouSecao = true;
+void Ligador::escreveInstrucoesNaSaidaTratandoReferenciasExternas(std::ifstream& arquivoEntrada, const std::string nomeArquivo){
+    std::string instrucoesArquivo = this->getInstrucoesArquivo(arquivoEntrada);
+    unsigned int indexInstrucaoNoArquivoAtual = 0;
+    std::string instrucao = "";
+    std::istringstream iss(instrucoesArquivo);
+    unsigned int posInicialInstrucoesArquivoNaMemoria = this->tabelaPosInicialArquivo.find(nomeArquivo)->second;
+    std::string instrucaoASerImpressa = "";
+
+    //Read every instruction writing it to the executavel.mv
+    while(iss >> instrucao){
+        instrucaoASerImpressa="";
+
+        if(this->instrucaoTemReferenciaExterna(instrucao)){
+            unsigned int enderecoAbsolutoAtual = indexInstrucaoNoArquivoAtual + posInicialInstrucoesArquivoNaMemoria;
+            int enderecoRelativo = this->getEnderecoRelativo(instrucao, enderecoAbsolutoAtual);
+            instrucaoASerImpressa = std::to_string(enderecoRelativo);
+        }else{
+            instrucaoASerImpressa = instrucao;
         }
-    }
+
+        instrucaoASerImpressa += " ";
+        (*this->saida) << instrucaoASerImpressa;
+        indexInstrucaoNoArquivoAtual++;
+    }    
 }
 
 const std::string Ligador::getInstrucoesArquivo(std::ifstream& arquivoEntrada){
@@ -121,48 +151,14 @@ const std::string Ligador::getInstrucoesArquivo(std::ifstream& arquivoEntrada){
     return instrucoesArquivo;
 }
 
-int Ligador::getEnderecoRelativo(const std::string instrucao, const unsigned int enderecoAtual){
-    std::unordered_map<std::string,unsigned int>::const_iterator par = this->tabelaSimbolos.find(instrucao.substr(1, instrucao.length()-1));
-    unsigned int enderecoAbsolutoLabel = par->second;
-    std::cout<<"Endereco absoluto do label: "<<enderecoAbsolutoLabel<<"\n";
-    std::cout<<"Endereco atual: "<<enderecoAtual<<"\n";
-    int enderecoRelativo = enderecoAbsolutoLabel - enderecoAtual -1;
-    return enderecoRelativo;
-}
-
-void Ligador::escreveInstrucoesNaSaidaTratandoReferenciasExternas(std::ifstream& arquivoEntrada, const std::string nomeArquivo){
-    std::string instrucoesArquivo = this->getInstrucoesArquivo(arquivoEntrada);
-    unsigned int indexInstrucao = 0;
-    std::string instrucao = "";
-    std::istringstream iss(instrucoesArquivo);
-    unsigned int posInicialInstrucoesArquivoNaMemoria = this->tabelaPosInicialArquivo.find(nomeArquivo)->second;
-    std::string instrucaoASerImpressa = "";
-    //Read every instruction writing it to the saida.mv
-    while(iss >> instrucao){
-        instrucaoASerImpressa="";
-        std::cout<<"Instrucao lida: ."<<instrucao<<".\n";
-
-        if(this->instrucaoTemReferenciaExterna(instrucao)){
-            //Assuming that every used label was defined somewere
-            unsigned int enderecoAtual = indexInstrucao + posInicialInstrucoesArquivoNaMemoria;
-            int enderecoRelativo = this->getEnderecoRelativo(instrucao, enderecoAtual);
-            std::cout<<"Imprimindo Endereco relativo calculado: "<<enderecoRelativo<<"\n";
-            instrucaoASerImpressa = std::to_string(enderecoRelativo);
-        }else{
-            instrucaoASerImpressa = instrucao;
-        }
-        
-        instrucaoASerImpressa += " ";
-        std::cout<<"Imprimindo: "<<instrucaoASerImpressa<<"\n";
-        (*this->saida) << instrucaoASerImpressa;
-        indexInstrucao++;
-    }    
-}
-
 bool Ligador::instrucaoTemReferenciaExterna(const std::string instrucao){
     return instrucao.substr(0,1).compare("#") == 0;
 }
 
-void Ligador::completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, const std::string nomeArquivo){
-    this->escreveInstrucoesNaSaidaTratandoReferenciasExternas(arquivoEntrada, nomeArquivo);
+int Ligador::getEnderecoRelativo(const std::string instrucao, const unsigned int enderecoAtual){
+    //Assuming that every used label was defined somewere
+    std::unordered_map<std::string,unsigned int>::const_iterator par = this->tabelaSimbolos.find(instrucao.substr(1, instrucao.length()-1));
+    unsigned int enderecoAbsolutoLabel = par->second;
+    int enderecoRelativo = enderecoAbsolutoLabel - enderecoAtual -1;
+    return enderecoRelativo;
 }
