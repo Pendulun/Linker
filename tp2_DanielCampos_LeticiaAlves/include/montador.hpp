@@ -12,7 +12,6 @@
 class Montador{
     private:
         std::ifstream* entrada;
-        std::ofstream* saida;
         
         const unsigned int TAMANHOPILHA = 1000;
         unsigned int LC;
@@ -45,7 +44,7 @@ class Montador{
         void escreveInstrucaoNoArquivoSaida(const std::string, const  std::list<std::string>);
 
     public:
-        Montador(std::ifstream& entrada, std::ofstream& saida);
+        Montador(std::ifstream& entrada);
         ~Montador();
 
         void montar();
