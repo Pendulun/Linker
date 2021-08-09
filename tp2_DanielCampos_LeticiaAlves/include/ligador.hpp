@@ -25,6 +25,8 @@ class Ligador{
         void escreveCabecalhoArquivoSaida();
         void defineInformacoesArquivoSaida();
 
+        void gravarPosInicialNaMemoriaInstrucoesArquivo(std::string);
+
     public:
         Ligador(std::ofstream& saida);
         ~Ligador();

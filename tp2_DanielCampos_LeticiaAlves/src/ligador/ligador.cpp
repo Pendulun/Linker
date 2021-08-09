@@ -38,14 +38,18 @@ void Ligador::defineInformacoesArquivoSaida(){
     this->entryPoint = enderecoMain->second;
 }
 
-void Ligador::lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo){
-    unsigned int tamanhoArquivo = 0;
-    std::string tamanhoArquivoString = "";
-
+void Ligador::gravarPosInicialNaMemoriaInstrucoesArquivo(std::string nomeArquivo){
     std::pair <std::string, unsigned int> par;
     par = std::make_pair(nomeArquivo, this->tamanhoTotal);
     this->tabelaPosInicialArquivo.insert(par);
+}
 
+void Ligador::lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo){
+    unsigned int tamanhoArquivo = 0;
+    std::string tamanhoArquivoString = "";
+    
+    this->gravarPosInicialNaMemoriaInstrucoesArquivo(nomeArquivo);
+    
     std::getline(arquivoEntrada, tamanhoArquivoString);
     tamanhoArquivo = std::stoul (tamanhoArquivoString, nullptr, 0);
 
@@ -68,7 +72,7 @@ void Ligador::lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::str
     std::string chave = "";
     unsigned int valor = 0;
     std::string valorString = "";
-
+    std::pair <std::string, unsigned int> par;
     size_t posSep = 0; 
 
     //Read every key-value pair in the Table of Symbles
