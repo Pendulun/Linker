@@ -44,6 +44,21 @@ void Ligador::gravarPosInicialNaMemoriaInstrucoesArquivo(std::string nomeArquivo
     this->tabelaPosInicialArquivo.insert(par);
 }
 
+void Ligador::navegarAteSecaoDaTabelaSimbolos(std::ifstream& arquivoEntrada){
+    bool achouParteTabela = false;
+    std::string linha = "";
+    const std::string IDENTIFICADORSECAO = "#TABELA";
+
+    //Find the Table of Symbles section
+    while(!achouParteTabela && !arquivoEntrada.eof()){
+        std::getline(arquivoEntrada, linha);
+
+        if (linha.compare(IDENTIFICADORSECAO)==0){
+            achouParteTabela = true;
+        }
+    }
+}
+
 void Ligador::lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo){
     unsigned int tamanhoArquivo = 0;
     std::string tamanhoArquivoString = "";
@@ -53,20 +68,10 @@ void Ligador::lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::str
     std::getline(arquivoEntrada, tamanhoArquivoString);
     tamanhoArquivo = std::stoul (tamanhoArquivoString, nullptr, 0);
 
-    bool achouParteTabela = false;
+    this->navegarAteSecaoDaTabelaSimbolos(arquivoEntrada);
+    
+
     std::string linha = "";
-
-
-    //Find the Table of Symbles part
-    while(!achouParteTabela && !arquivoEntrada.eof()){
-        std::getline(arquivoEntrada, linha);
-
-        if (linha.compare("#TABELA")==0){
-            achouParteTabela = true;
-        }
-    }
-
-    linha = "";
 
     std::string separador = ":";
     std::string chave = "";

@@ -26,7 +26,7 @@ class Ligador{
         void defineInformacoesArquivoSaida();
 
         void gravarPosInicialNaMemoriaInstrucoesArquivo(std::string);
-
+        void navegarAteSecaoDaTabelaSimbolos(std::ifstream& arquivoEntrada);
     public:
         Ligador(std::ofstream& saida);
         ~Ligador();
