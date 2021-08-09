@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) {
                     if (entrada.is_open()){
                         std::cout<<"Abriu arquivo : "<<argv[i]<<" no passo 2\n";
                         //Envia o arquivo para o passo 2 do Ligador 
+                        linker.completarComInstrucoesDoArquivo(entrada, argv[i]);
                         entrada.close();
                     }else{
                         std::cout<<"Nao foi possivel abrir o arquivo: "<<argv[i]<<"\n";

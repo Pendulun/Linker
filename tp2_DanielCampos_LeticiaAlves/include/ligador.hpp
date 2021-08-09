@@ -3,10 +3,12 @@
 
 #include <fstream>
 #include <string>
+#include <cstring>
 #include <list>
 #include <unordered_map>
 #include <utility>
 #include <iostream>
+#include <sstream>
 
 class Ligador{
     private:
@@ -18,11 +20,11 @@ class Ligador{
         unsigned int posAP;
         unsigned int entryPoint;
         std::unordered_map<std::string, unsigned int> tabelaSimbolos;
+        std::unordered_map<std::string, unsigned int> tabelaPosInicialArquivo;
 
         
         void escreveCabecalhoArquivoSaida();
         void defineInformacoesArquivoSaida();
-        
         int calculaEnderecoRelativo(unsigned int pc, unsigned int endereco);
 
     public:
@@ -30,7 +32,7 @@ class Ligador{
         ~Ligador();
 
         void lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo);
-        void completarInstrucoesDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo);
+        void completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo);
         void escreveTabelaDeSimbolos();
         void escreveInformacoesArquivoSaida();
         void passo2();
