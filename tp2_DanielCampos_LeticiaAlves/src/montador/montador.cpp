@@ -143,7 +143,6 @@ void Montador::defineInformacoesArquivoSaida(){
 void Montador::escreveInformacoesArquivoSaida(){
     std::cout<<std::to_string(this->tamanhoPrograma)<<std::endl;
     std::cout<<std::endl;
-    std::cout<<std::endl;
 }
 
 void Montador::escreveInstrucaoNoArquivoSaida(const std::string codigoOperacao, const std::list<std::string> operandos){
