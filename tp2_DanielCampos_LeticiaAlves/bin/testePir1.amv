@@ -1,0 +1,16 @@
+; Esse programa recebe um número positivo e imprime de 0 a esse número e, depois desse número até zero
+IMPRIMEATETOPO: WRITE R2
+                ADD R2 R1
+                PUSH R2
+                SUB R2 R0
+                POP R2
+                JZ  IMPRIMEATEZERO
+                JUMP IMPRIMEATETOPO
+
+IMPRIMEATEZERO: WRITE R2 
+                SUB R2 R1
+                JN FIM
+                JUMP IMPRIMEATEZERO
+
+FIM: HALT    
+END
