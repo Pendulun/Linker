@@ -12,8 +12,6 @@
 
 class Ligador{
     private:
-        std::ofstream* saida;
-
         const unsigned int TAMANHOPILHA = 1000;
         unsigned int tamanhoTotal;
         unsigned int endCarregamento;
@@ -39,7 +37,7 @@ class Ligador{
         int getEnderecoRelativo(const std::string instrucao, const unsigned int enderecoAtual);
         
     public:
-        Ligador(std::ofstream& saida);
+        Ligador();
         ~Ligador();
 
         void lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo);

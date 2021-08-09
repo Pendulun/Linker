@@ -1,7 +1,6 @@
 #include "ligador.hpp"
 
-Ligador::Ligador(std::ofstream& saida){
-    this->saida = &saida;
+Ligador::Ligador(){
     this->posAP=0;
     this->tamanhoTotal=0;
     this->entryPoint=0;
@@ -18,18 +17,18 @@ Ligador::~Ligador(){
 void Ligador::escreveInformacoesArquivoSaida(){
     this->escreveCabecalhoArquivoSaida();
     this->defineInformacoesArquivoSaida();
-    *this->saida<<std::to_string(this->tamanhoTotal).append(" ");
-    *this->saida<<std::to_string(this->endCarregamento).append(" ");
-    *this->saida<<std::to_string(this->posAP).append(" ");
-    *this->saida<<std::to_string(this->entryPoint);
-    *this->saida<<std::endl;
-    *this->saida<<std::endl;
+    std::cout<<std::to_string(this->tamanhoTotal).append(" ");
+    std::cout<<std::to_string(this->endCarregamento).append(" ");
+    std::cout<<std::to_string(this->posAP).append(" ");
+    std::cout<<std::to_string(this->entryPoint);
+    std::cout<<std::endl;
+    std::cout<<std::endl;
 }
 
 void Ligador::escreveCabecalhoArquivoSaida(){
-    (*this->saida)<<"MV-EXE";
-    (*this->saida)<<std::endl;
-    (*this->saida)<<std::endl;
+    std::cout<<"MV-EXE";
+    std::cout<<std::endl;
+    std::cout<<std::endl;
 }
 
 void Ligador::defineInformacoesArquivoSaida(){
@@ -61,7 +60,9 @@ void Ligador::gravarPosInicialNaMemoriaInstrucoesArquivo(std::string nomeArquivo
 unsigned int Ligador::getTamanhoTotalArquivo(std::ifstream& arquivoEntrada){
     std::string tamanhoArquivoString = "";
     std::getline(arquivoEntrada, tamanhoArquivoString);
-    return std::stoul(tamanhoArquivoString, nullptr, 0);
+    unsigned int tamanhoArquivo = 0;
+    tamanhoArquivo = std::stoul(tamanhoArquivoString, nullptr, 0);
+    return tamanhoArquivo;
 }
 
 
@@ -140,7 +141,7 @@ void Ligador::escreveInstrucoesNaSaidaTratandoReferenciasExternas(std::ifstream&
         }
 
         instrucaoASerImpressa += " ";
-        (*this->saida) << instrucaoASerImpressa;
+        std::cout<<instrucaoASerImpressa;
         indexInstrucaoNoArquivoAtual++;
     }    
 }

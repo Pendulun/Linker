@@ -141,7 +141,7 @@ void Montador::defineInformacoesArquivoSaida(){
 }
 
 void Montador::escreveInformacoesArquivoSaida(){
-    std::cout<<std::to_string(this->tamanhoPrograma).append(" ")<<std::endl;
+    std::cout<<std::to_string(this->tamanhoPrograma)<<std::endl;
     std::cout<<std::endl;
     std::cout<<std::endl;
 }

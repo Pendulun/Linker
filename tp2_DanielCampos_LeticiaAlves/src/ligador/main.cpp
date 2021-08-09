@@ -5,13 +5,11 @@
 #include <iterator>
 
 int main(int argc, char *argv[]) {
-    std::ofstream saida = std::ofstream("executavel.mv");
 
     if (argc > 1){
-        if(saida.is_open()){
             bool abriuTodos = true;
 
-            Ligador linker(saida);
+            Ligador linker;
 
             //Passo 1 
             for(int i = 1; i<argc; i++){
@@ -27,10 +25,9 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            linker.escreveInformacoesArquivoSaida();
-
             //Passo 2
             if(abriuTodos){
+                linker.escreveInformacoesArquivoSaida();
                 for(int i = 1; i<argc; i++){
                     std::ifstream entrada = std::ifstream(argv[i]);
                     if (entrada.is_open()){
@@ -42,11 +39,7 @@ int main(int argc, char *argv[]) {
                         break;
                     }
                 }
-            }
-            saida.close();
-        }else{
-            std::cout<<"Nao foi possivel abrir o arquivo de saida\n";
-        }   
+            } 
     }else{
         std::cout<<"Nenhum arquivo de entrada foi informado.\n";
         return 1;
