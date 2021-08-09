@@ -32,12 +32,15 @@ class Ligador{
         unsigned int calculaEnderecoAbsoluto(const unsigned int valor);
 
         void navegaAteSecaoDoIdentificador(std::ifstream& arquivoEntrada, const std::string IDENTIFICADOR);
+
+        void escreveInstrucoesNaSaidaTratandoReferenciasExternas(std::ifstream& arquivoEntrada, const std::string nomeArquivo);
+        bool instrucaoTemReferenciaExterna(const std::string instrucao);
     public:
         Ligador(std::ofstream& saida);
         ~Ligador();
 
         void lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo);
-        void completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo);
+        void completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, const std::string nomeArquivo);
         void escreveTabelaDeSimbolos();
         void escreveInformacoesArquivoSaida();
 };

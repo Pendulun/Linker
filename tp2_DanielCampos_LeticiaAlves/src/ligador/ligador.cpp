@@ -66,7 +66,7 @@ unsigned int Ligador::getTamanhoTotalArquivo(std::ifstream& arquivoEntrada){
 void Ligador::leEGravaTabelaDeSimbolos(std::ifstream& arquivoEntrada){
     const std::string IDENTIFICADORSECAO = "#TABELA";
     this->navegaAteSecaoDoIdentificador(arquivoEntrada, IDENTIFICADORSECAO);
-    
+
     std::string linha = "";
     const std::string SEPARADOR = ":";
 
@@ -113,12 +113,11 @@ void Ligador::navegaAteSecaoDoIdentificador(std::ifstream& arquivoEntrada, const
     }
 }
 
-void Ligador::completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo){
-    std::string linha = "";
-
+void Ligador::escreveInstrucoesNaSaidaTratandoReferenciasExternas(std::ifstream& arquivoEntrada, const std::string nomeArquivo){
     const std::string IDENTIFICADORSECAO = "#INSTRUCOES";
     this->navegaAteSecaoDoIdentificador(arquivoEntrada,IDENTIFICADORSECAO);
 
+    std::string linha = "";
     std::getline(arquivoEntrada, linha);
     unsigned int indexInstrucao = 0;
     std::string instrucao = "";
@@ -128,9 +127,8 @@ void Ligador::completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, std
     //Read every instruction writing it to the saida.mv
     while(iss >> instrucao){
         std::cout<<"Instrucao lida: ."<<instrucao<<".\n";
-        std::string primeiraLetra = instrucao.substr(0,1);
 
-        if(primeiraLetra.compare("#") == 0){
+        if(this->instrucaoTemReferenciaExterna(instrucao)){
             //Assuming that every used label was defined somewere
             std::unordered_map<std::string,unsigned int>::const_iterator par = this->tabelaSimbolos.find(instrucao.substr(1, instrucao.length()-1));
             unsigned int enderecoAbsolutoLabel = par->second;
@@ -147,4 +145,12 @@ void Ligador::completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, std
         }
         indexInstrucao++;
     }    
+}
+
+bool Ligador::instrucaoTemReferenciaExterna(const std::string instrucao){
+    return instrucao.substr(0,1).compare("#") == 0;
+}
+
+void Ligador::completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, const std::string nomeArquivo){
+    this->escreveInstrucoesNaSaidaTratandoReferenciasExternas(arquivoEntrada, nomeArquivo);
 }
