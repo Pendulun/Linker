@@ -8,3 +8,4 @@ main:   CALL doStuff
 
 const3: WORD 3
 const4: WORD 4
+END

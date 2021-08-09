@@ -8,3 +8,4 @@ doStuff:    LOAD R2 const10
             RET
 
 const10: WORD 10
+END
