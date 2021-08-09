@@ -1,9 +1,0 @@
-12 
-
-#INSTRUCOES
-3 0 2 0 233333 19 #add100 4 0 0 100 -1 
-
-#TABELA
-a:11
-const100:10
-main:0
