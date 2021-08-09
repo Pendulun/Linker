@@ -1,8 +1,7 @@
 #include "montador.hpp"
 
-Montador::Montador(std::ifstream& entrada, std::ofstream& saida){
+Montador::Montador(std::ifstream& entrada){
     this->entrada = &entrada;
-    this->saida = &saida;
     this->tamanhoPrograma=0;
     this->definiuEntryPoint = false;
     this->LC=0;
@@ -10,7 +9,6 @@ Montador::Montador(std::ifstream& entrada, std::ofstream& saida){
 
 Montador::~Montador(){
     this->entrada = nullptr;
-    this->saida = nullptr;    
 }
 
 void Montador::montar(){
@@ -18,8 +16,10 @@ void Montador::montar(){
 }
 
 void Montador::escreveTabelaDeSimbolos(){
+    std::cout<<"\n\n";
+    std::cout<<"#TABELA\n";
     for (std::map<std::string, unsigned int>::iterator it=this->tabelaDeSimbolos.begin(); it!=this->tabelaDeSimbolos.end(); ++it){
-        *this->saida<<it->first<<":"<<it->second<<"\n";
+        std::cout<<it->first<<":"<<it->second<<"\n";
     }
     //std::cout<<std::endl;
 }
@@ -141,15 +141,15 @@ void Montador::defineInformacoesArquivoSaida(){
 }
 
 void Montador::escreveInformacoesArquivoSaida(){
-    *this->saida<<std::to_string(this->tamanhoPrograma).append(" ");
-    *this->saida<<std::endl;
-    *this->saida<<std::endl;
+    std::cout<<std::to_string(this->tamanhoPrograma).append(" ")<<std::endl;
+    std::cout<<std::endl;
+    std::cout<<std::endl;
 }
 
 void Montador::escreveInstrucaoNoArquivoSaida(const std::string codigoOperacao, const std::list<std::string> operandos){
-    *this->saida<<codigoOperacao<<" ";
+    std::cout<<codigoOperacao<<" ";
     for(std::string operando : operandos){
-        *this->saida<<operando.append(" ");
+        std::cout<<operando.append(" ");
     }
 }
 
@@ -310,7 +310,7 @@ void Montador::passo2(){
     std::string valorOperacao="";
     //Para cada instrução lida
 
-    *this->saida<<"#INSTRUCOES\n";
+    std::cout<<"#INSTRUCOES\n";
 
     while(!this->entrada->eof()){
         std::getline(*this->entrada, instrucao);
@@ -466,8 +466,6 @@ void Montador::passo2(){
         }
     }
 
-    *this->saida<<"\n\n";
-    *this->saida<<"#TABELA\n";
     this->escreveTabelaDeSimbolos();
 }
 
