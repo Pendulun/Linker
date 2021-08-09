@@ -38,10 +38,43 @@ void Ligador::defineInformacoesArquivoSaida(){
     this->entryPoint = enderecoMain->second;
 }
 
+void Ligador::lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo){
+    
+    this->gravarPosInicialNaMemoriaInstrucoesArquivo(nomeArquivo);
+    
+    unsigned int tamanhoArquivo = this->getTamanhoTotalArquivo(arquivoEntrada); 
+    
+    this->leEGravaTabelaDeSimbolos(arquivoEntrada);
+
+    this->tamanhoTotal += tamanhoArquivo; 
+}
+
+
 void Ligador::gravarPosInicialNaMemoriaInstrucoesArquivo(std::string nomeArquivo){
     std::pair <std::string, unsigned int> par;
     par = std::make_pair(nomeArquivo, this->tamanhoTotal);
     this->tabelaPosInicialArquivo.insert(par);
+}
+
+unsigned int Ligador::getTamanhoTotalArquivo(std::ifstream& arquivoEntrada){
+    std::string tamanhoArquivoString = "";
+    std::getline(arquivoEntrada, tamanhoArquivoString);
+    return std::stoul(tamanhoArquivoString, nullptr, 0);
+}
+
+
+void Ligador::leEGravaTabelaDeSimbolos(std::ifstream& arquivoEntrada){
+    this->navegarAteSecaoDaTabelaSimbolos(arquivoEntrada);
+    std::string linha = "";
+    const std::string SEPARADOR = ":";
+
+    //Read every key-value pair in the Table of Symbles
+    while(!arquivoEntrada.eof()){
+        std::getline(arquivoEntrada, linha);
+        if(linha.compare("")!=0){
+            this->adicionaLabelEValorNaTabelaDeSimbolos(linha, SEPARADOR);
+        }
+    }
 }
 
 void Ligador::navegarAteSecaoDaTabelaSimbolos(std::ifstream& arquivoEntrada){
@@ -59,48 +92,19 @@ void Ligador::navegarAteSecaoDaTabelaSimbolos(std::ifstream& arquivoEntrada){
     }
 }
 
-unsigned int Ligador::getTamanhoTotalArquivo(std::ifstream& arquivoEntrada){
-    std::string tamanhoArquivoString = "";
-    std::getline(arquivoEntrada, tamanhoArquivoString);
-    return std::stoul(tamanhoArquivoString, nullptr, 0);
+void Ligador::adicionaLabelEValorNaTabelaDeSimbolos(const std::string linha, const std::string SEPARADOR){
+        size_t posSep = linha.find(SEPARADOR);
+
+        std::string chave = linha.substr(0, posSep);
+        std::string valorString = linha.substr(posSep+1, linha.length()-posSep-1);
+        unsigned int valor = std::stoul (valorString, nullptr, 0);
+        
+        std::pair<std::string, unsigned int> par = std::make_pair(chave, this->calculaEnderecoAbsoluto(valor));
+        this->tabelaSimbolos.insert(par);
 }
 
-void Ligador::lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo){
-    
-    this->gravarPosInicialNaMemoriaInstrucoesArquivo(nomeArquivo);
-    
-    unsigned int tamanhoArquivo = this->getTamanhoTotalArquivo(arquivoEntrada); 
-
-    this->navegarAteSecaoDaTabelaSimbolos(arquivoEntrada);
-    
-    std::string linha = "";
-
-    std::string separador = ":";
-    std::string chave = "";
-    unsigned int valor = 0;
-    std::string valorString = "";
-    std::pair <std::string, unsigned int> par;
-    size_t posSep = 0; 
-
-    //Read every key-value pair in the Table of Symbles
-    while(!arquivoEntrada.eof()){
-        posSep = 0;
-        std::getline(arquivoEntrada, linha);
-        
-        if(linha.compare("")!=0){
-            posSep = linha.find(separador);
-
-            chave = linha.substr(0, posSep);
-            valorString = linha.substr(posSep+1, linha.length()-posSep-1);
-            valor = std::stoul (valorString, nullptr, 0);
-
-            par = std::make_pair(chave, valor+this->tamanhoTotal);
-            this->tabelaSimbolos.insert(par);
-        }
-    }
-
-    this->tamanhoTotal += tamanhoArquivo; 
-
+unsigned int Ligador::calculaEnderecoAbsoluto(const unsigned int valor){
+    return valor+this->tamanhoTotal;
 }
 
 void Ligador::escreveTabelaDeSimbolos(){
