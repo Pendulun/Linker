@@ -1,0 +1,11 @@
+;Programa que lê dois números e imprime o AND, OR e NOT dos dois
+main:   READ R1
+        READ R2
+        COPY R3 R1
+        CALL IMPRIMEAND
+        COPY R1 R3
+        CALL IMPRIMEOR
+        COPY R1 R3
+        CALL IMPRIMENOTS
+        HALT
+        END

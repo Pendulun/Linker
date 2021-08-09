@@ -1,0 +1,9 @@
+IMPRIMEAND: AND R1 R2
+            WRITE R1
+            RET
+
+IMPRIMENOTS:    NOT R1
+                NOT R2
+                WRITE R1
+                WRITE R2
+                RET

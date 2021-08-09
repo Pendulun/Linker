@@ -1,0 +1,10 @@
+doStuff:    LOAD R2 const10
+            LOAD R3 const3
+            MUL R2 R3
+            LOAD R3 const2
+            DIV R2 R3
+            LOAD R3 const4
+            MOD R2 R3
+            RET
+
+const10: WORD 10
