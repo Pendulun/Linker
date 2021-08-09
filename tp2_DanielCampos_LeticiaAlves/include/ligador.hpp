@@ -17,16 +17,12 @@ class Ligador{
         unsigned int endCarregamento;
         unsigned int posAP;
         unsigned int entryPoint;
-        bool definiuEntryPoint;
         std::unordered_map<std::string, unsigned int> tabelaSimbolos;
 
         
         void escreveCabecalhoArquivoSaida();
-        void escreveInformacoesArquivoSaida();
-        void escreveInstrucaoNoArquivoSaida(const std::string, const  std::list<std::string>);
-        void verificaEDefineEntryPoint();
         void defineInformacoesArquivoSaida();
-
+        
         int calculaEnderecoRelativo(unsigned int pc, unsigned int endereco);
 
     public:
@@ -36,7 +32,7 @@ class Ligador{
         void lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo);
         void completarInstrucoesDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo);
         void escreveTabelaDeSimbolos();
-        void passo1();
+        void escreveInformacoesArquivoSaida();
         void passo2();
 
 };

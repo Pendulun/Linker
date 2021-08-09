@@ -5,7 +5,6 @@ Ligador::Ligador(std::ofstream& saida){
     this->posAP=0;
     this->tamanhoTotal=0;
     this->entryPoint=0;
-    this->definiuEntryPoint = false;
     this->endCarregamento=0;
     this->tabelaSimbolos.clear();
 }
@@ -20,14 +19,9 @@ void Ligador::escreveCabecalhoArquivoSaida(){
     (*this->saida)<<std::endl;
 }
 
-void Ligador::verificaEDefineEntryPoint(){
-    if(!this->definiuEntryPoint){
-        //this->entryPoint = this->LC;
-        this->definiuEntryPoint=true;
-    }
-}
-
 void Ligador::escreveInformacoesArquivoSaida(){
+    this->escreveCabecalhoArquivoSaida();
+    this->defineInformacoesArquivoSaida();
     *this->saida<<std::to_string(this->tamanhoTotal).append(" ");
     *this->saida<<std::to_string(this->endCarregamento).append(" ");
     *this->saida<<std::to_string(this->posAP).append(" ");
@@ -36,18 +30,12 @@ void Ligador::escreveInformacoesArquivoSaida(){
     *this->saida<<std::endl;
 }
 
-void Ligador::escreveInstrucaoNoArquivoSaida(const std::string codigoOperacao, const std::list<std::string> operandos){
-    *this->saida<<codigoOperacao<<" ";
-    for(std::string operando : operandos){
-        *this->saida<<operando.append(" ");
-    }
-}
-
 void Ligador::defineInformacoesArquivoSaida(){
-    //this->tamanhoPrograma = this->LC;
     this->endCarregamento=0;
     this->posAP = this->endCarregamento + this->tamanhoTotal + this->TAMANHOPILHA;
-
+    std::unordered_map<std::string,unsigned int>::const_iterator enderecoMain = this->tabelaSimbolos.find("main");
+    //Assuming that "main" is a label that is always defined somewere
+    this->entryPoint = enderecoMain->second;
 }
 
 void Ligador::lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo){

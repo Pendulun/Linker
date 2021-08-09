@@ -30,6 +30,7 @@ int main(int argc, char *argv[]) {
             }
 
             linker.escreveTabelaDeSimbolos();
+            linker.escreveInformacoesArquivoSaida();
 
             //Passo 2
             if(abriuTodos){
