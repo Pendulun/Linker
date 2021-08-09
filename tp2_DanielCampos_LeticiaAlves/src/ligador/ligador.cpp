@@ -59,18 +59,20 @@ void Ligador::navegarAteSecaoDaTabelaSimbolos(std::ifstream& arquivoEntrada){
     }
 }
 
-void Ligador::lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo){
-    unsigned int tamanhoArquivo = 0;
+unsigned int Ligador::getTamanhoTotalArquivo(std::ifstream& arquivoEntrada){
     std::string tamanhoArquivoString = "";
+    std::getline(arquivoEntrada, tamanhoArquivoString);
+    return std::stoul(tamanhoArquivoString, nullptr, 0);
+}
+
+void Ligador::lerTamanhoETabelaDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo){
     
     this->gravarPosInicialNaMemoriaInstrucoesArquivo(nomeArquivo);
     
-    std::getline(arquivoEntrada, tamanhoArquivoString);
-    tamanhoArquivo = std::stoul (tamanhoArquivoString, nullptr, 0);
+    unsigned int tamanhoArquivo = this->getTamanhoTotalArquivo(arquivoEntrada); 
 
     this->navegarAteSecaoDaTabelaSimbolos(arquivoEntrada);
     
-
     std::string linha = "";
 
     std::string separador = ":";
