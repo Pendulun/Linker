@@ -22,10 +22,8 @@ class Ligador{
         std::unordered_map<std::string, unsigned int> tabelaSimbolos;
         std::unordered_map<std::string, unsigned int> tabelaPosInicialArquivo;
 
-        
         void escreveCabecalhoArquivoSaida();
         void defineInformacoesArquivoSaida();
-        int calculaEnderecoRelativo(unsigned int pc, unsigned int endereco);
 
     public:
         Ligador(std::ofstream& saida);
@@ -35,8 +33,5 @@ class Ligador{
         void completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo);
         void escreveTabelaDeSimbolos();
         void escreveInformacoesArquivoSaida();
-        void passo2();
-
 };
-
 #endif

@@ -140,8 +140,3 @@ void Ligador::completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, std
         indexInstrucao++;
     }    
 }
-
-int Ligador::calculaEnderecoRelativo(unsigned int LC, unsigned int endereco){
-    int enderecoRelativo = endereco - (LC);
-    return enderecoRelativo;
-}
