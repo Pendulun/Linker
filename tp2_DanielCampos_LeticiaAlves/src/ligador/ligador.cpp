@@ -121,32 +121,40 @@ const std::string Ligador::getInstrucoesArquivo(std::ifstream& arquivoEntrada){
     return instrucoesArquivo;
 }
 
+int Ligador::getEnderecoRelativo(const std::string instrucao, const unsigned int enderecoAtual){
+    std::unordered_map<std::string,unsigned int>::const_iterator par = this->tabelaSimbolos.find(instrucao.substr(1, instrucao.length()-1));
+    unsigned int enderecoAbsolutoLabel = par->second;
+    std::cout<<"Endereco absoluto do label: "<<enderecoAbsolutoLabel<<"\n";
+    std::cout<<"Endereco atual: "<<enderecoAtual<<"\n";
+    int enderecoRelativo = enderecoAbsolutoLabel - enderecoAtual -1;
+    return enderecoRelativo;
+}
+
 void Ligador::escreveInstrucoesNaSaidaTratandoReferenciasExternas(std::ifstream& arquivoEntrada, const std::string nomeArquivo){
     std::string instrucoesArquivo = this->getInstrucoesArquivo(arquivoEntrada);
     unsigned int indexInstrucao = 0;
     std::string instrucao = "";
     std::istringstream iss(instrucoesArquivo);
     unsigned int posInicialInstrucoesArquivoNaMemoria = this->tabelaPosInicialArquivo.find(nomeArquivo)->second;
-
+    std::string instrucaoASerImpressa = "";
     //Read every instruction writing it to the saida.mv
     while(iss >> instrucao){
+        instrucaoASerImpressa="";
         std::cout<<"Instrucao lida: ."<<instrucao<<".\n";
 
         if(this->instrucaoTemReferenciaExterna(instrucao)){
             //Assuming that every used label was defined somewere
-            std::unordered_map<std::string,unsigned int>::const_iterator par = this->tabelaSimbolos.find(instrucao.substr(1, instrucao.length()-1));
-            unsigned int enderecoAbsolutoLabel = par->second;
-            std::cout<<"Endereco absoluto do label: "<<enderecoAbsolutoLabel<<"\n";
             unsigned int enderecoAtual = indexInstrucao + posInicialInstrucoesArquivoNaMemoria;
-            std::cout<<"Endereco atual: "<<enderecoAtual<<"\n";
-            int enderecoRelativo = enderecoAbsolutoLabel - enderecoAtual -1;
+            int enderecoRelativo = this->getEnderecoRelativo(instrucao, enderecoAtual);
             std::cout<<"Imprimindo Endereco relativo calculado: "<<enderecoRelativo<<"\n";
-            (*this->saida)<< std::to_string(enderecoRelativo);
-            (*this->saida)<< " ";
+            instrucaoASerImpressa = std::to_string(enderecoRelativo);
         }else{
-            std::cout<<"Imprimindo: "<<instrucao<<"\n";
-            (*this->saida)<< instrucao.append(" ");
+            instrucaoASerImpressa = instrucao;
         }
+        
+        instrucaoASerImpressa += " ";
+        std::cout<<"Imprimindo: "<<instrucaoASerImpressa<<"\n";
+        (*this->saida) << instrucaoASerImpressa;
         indexInstrucao++;
     }    
 }
