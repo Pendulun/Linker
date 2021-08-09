@@ -113,15 +113,19 @@ void Ligador::navegaAteSecaoDoIdentificador(std::ifstream& arquivoEntrada, const
     }
 }
 
-void Ligador::escreveInstrucoesNaSaidaTratandoReferenciasExternas(std::ifstream& arquivoEntrada, const std::string nomeArquivo){
+const std::string Ligador::getInstrucoesArquivo(std::ifstream& arquivoEntrada){
     const std::string IDENTIFICADORSECAO = "#INSTRUCOES";
     this->navegaAteSecaoDoIdentificador(arquivoEntrada,IDENTIFICADORSECAO);
+    std::string instrucoesArquivo;
+    std::getline(arquivoEntrada, instrucoesArquivo);
+    return instrucoesArquivo;
+}
 
-    std::string linha = "";
-    std::getline(arquivoEntrada, linha);
+void Ligador::escreveInstrucoesNaSaidaTratandoReferenciasExternas(std::ifstream& arquivoEntrada, const std::string nomeArquivo){
+    std::string instrucoesArquivo = this->getInstrucoesArquivo(arquivoEntrada);
     unsigned int indexInstrucao = 0;
     std::string instrucao = "";
-    std::istringstream iss(linha);
+    std::istringstream iss(instrucoesArquivo);
     unsigned int posInicialInstrucoesArquivoNaMemoria = this->tabelaPosInicialArquivo.find(nomeArquivo)->second;
 
     //Read every instruction writing it to the saida.mv
