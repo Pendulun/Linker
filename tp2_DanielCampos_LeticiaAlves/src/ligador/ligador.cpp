@@ -64,7 +64,9 @@ unsigned int Ligador::getTamanhoTotalArquivo(std::ifstream& arquivoEntrada){
 
 
 void Ligador::leEGravaTabelaDeSimbolos(std::ifstream& arquivoEntrada){
-    this->navegarAteSecaoDaTabelaSimbolos(arquivoEntrada);
+    const std::string IDENTIFICADORSECAO = "#TABELA";
+    this->navegaAteSecaoDoIdentificador(arquivoEntrada, IDENTIFICADORSECAO);
+    
     std::string linha = "";
     const std::string SEPARADOR = ":";
 
@@ -73,21 +75,6 @@ void Ligador::leEGravaTabelaDeSimbolos(std::ifstream& arquivoEntrada){
         std::getline(arquivoEntrada, linha);
         if(linha.compare("")!=0){
             this->adicionaLabelEValorNaTabelaDeSimbolos(linha, SEPARADOR);
-        }
-    }
-}
-
-void Ligador::navegarAteSecaoDaTabelaSimbolos(std::ifstream& arquivoEntrada){
-    bool achouParteTabela = false;
-    std::string linha = "";
-    const std::string IDENTIFICADORSECAO = "#TABELA";
-
-    //Find the Table of Symbles section
-    while(!achouParteTabela && !arquivoEntrada.eof()){
-        std::getline(arquivoEntrada, linha);
-
-        if (linha.compare(IDENTIFICADORSECAO)==0){
-            achouParteTabela = true;
         }
     }
 }
@@ -114,17 +101,23 @@ void Ligador::escreveTabelaDeSimbolos(){
     std::cout<<std::endl;
 }
 
-void Ligador::completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo){
+void Ligador::navegaAteSecaoDoIdentificador(std::ifstream& arquivoEntrada, const std::string IDENTIFICADORSECAO){
     std::string linha = "";
-    bool achouParteInstrucoes = false;
-    //Procurar a parte das intruções
-    while(!achouParteInstrucoes && !arquivoEntrada.eof()){
+    bool achouSecao = false;
+    while(!achouSecao && !arquivoEntrada.eof()){
         std::getline(arquivoEntrada, linha);
 
-        if (linha.compare("#INSTRUCOES")==0){
-            achouParteInstrucoes = true;
+        if (linha.compare(IDENTIFICADORSECAO)==0){
+            achouSecao = true;
         }
     }
+}
+
+void Ligador::completarComInstrucoesDoArquivo(std::ifstream& arquivoEntrada, std::string nomeArquivo){
+    std::string linha = "";
+
+    const std::string IDENTIFICADORSECAO = "#INSTRUCOES";
+    this->navegaAteSecaoDoIdentificador(arquivoEntrada,IDENTIFICADORSECAO);
 
     std::getline(arquivoEntrada, linha);
     unsigned int indexInstrucao = 0;

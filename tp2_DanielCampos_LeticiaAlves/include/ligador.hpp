@@ -26,12 +26,12 @@ class Ligador{
         void defineInformacoesArquivoSaida();
 
         void gravarPosInicialNaMemoriaInstrucoesArquivo(std::string);
-        void navegarAteSecaoDaTabelaSimbolos(std::ifstream& arquivoEntrada);
         unsigned int getTamanhoTotalArquivo(std::ifstream&);
         void leEGravaTabelaDeSimbolos(std::ifstream& arquivoEntrada);
         void adicionaLabelEValorNaTabelaDeSimbolos(const std::string linha, const std::string SEPARADOR);
         unsigned int calculaEnderecoAbsoluto(const unsigned int valor);
-    
+
+        void navegaAteSecaoDoIdentificador(std::ifstream& arquivoEntrada, const std::string IDENTIFICADOR);
     public:
         Ligador(std::ofstream& saida);
         ~Ligador();
